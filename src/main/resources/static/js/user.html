@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Information</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+          crossorigin="anonymous">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sidebar {
+            width: 200px;
+            background-color: #f4f4f4;
+            padding: 20px;
+            position: fixed;
+            top: 50px;
+            bottom: 0;
+            left: 0;
+        }
+
+        .content {
+            margin-left: 220px;
+            padding: 20px;
+        }
+
+        .logout-button {
+            background-color: #ff6347;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        .logout-button:hover {
+            background-color: #ff4500;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<nav class="navbar justify-content-between px-4" style="background-color: #1e1e1e;">
+    <span class="navbar-text text-light">
+        Email: <span id="header-email" style="font-weight: 650;">Loading...</span>
+        with roles: <span id="header-roles">Loading...</span>
+    </span>
+    <a href="/logout" class="text-muted" style="text-decoration: none; color: white;">
+        Logout
+    </a>
+</nav>
+
+<!-- Sidebar слева -->
+<div class="d-flex flex-column bg-white border-right"
+     style="width: 200px; height: 100vh; position: fixed; top: 56px; left: 0; box-shadow: 1px 0 5px rgba(0,0,0,0.1);">
+
+    <!-- Отступ сверху -->
+    <div style="height: 12px;"></div>
+
+    <!-- Синяя полоса -->
+    <div style="background-color: #007bff; color: white; padding: 8px 0 8px 16px; width: 100%;">
+        User
+    </div>
+
+    <div class="p-3">
+        <!-- Здесь может быть меню -->
+    </div>
+</div>
+
+<!-- Основной контент -->
+<div class="content-area"
+     style="margin-left: 200px; background-color: #f8f9fa; min-height: calc(100vh - 56px); padding: 30px;">
+    <h1 class="display-5">User information-page</h1>
+
+    <div class="card mt-4">
+        <div class="card-header" style="padding-top: 0.55rem; padding-bottom: 0.45rem; padding-left: 1.5rem;">
+            <h5 class="fw-semibold mb-0">About user</h5>
+        </div>
+
+        <div class="card-body p-0">
+            <table class="table table-striped">
+                <thead>
+                <tr style="border-top: none;">
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Last name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td id="userId">Loading...</td>
+                    <td id="userUserName">Loading...</td>
+                    <td id="userLastName">Loading...</td>
+                    <td id="userEmail">Loading...</td>
+                    <td id="userRoles">Loading...</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- jQuery, Popper.js и Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+<!-- Подключение JS -->
+<script src="/js/user.js"></script>
+
+</body>
+</html>

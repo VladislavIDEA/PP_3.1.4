@@ -1,0 +1,89 @@
+package ilyasov.example.pprestcontrollers.controllers;
+
+import ilyasov.example.pprestcontrollers.mappers.UserMapper;
+import ilyasov.example.pprestcontrollers.models.Role;
+import ilyasov.example.pprestcontrollers.models.User;
+import ilyasov.example.pprestcontrollers.models.UserDTO;
+import ilyasov.example.pprestcontrollers.services.RoleService;
+import ilyasov.example.pprestcontrollers.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+@RestController
+@RequestMapping("/api/admin")
+public class AdminRestController {
+    private final UserService userService;
+    private final RoleService roleService;
+    private final UserMapper userMapper;
+
+    @Autowired
+    public AdminRestController(UserService userService,
+                               RoleService roleService,
+                               UserMapper userMapper) {
+        this.userService = userService;
+        this.roleService = roleService;
+        this.userMapper = userMapper;
+    }
+
+    @GetMapping("/users")
+    public List<UserDTO> getAllUsers() {
+        return userService.findAll().stream()
+                .map(userMapper::fromDTO)
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("/users/{id}")
+    public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
+        Optional<User> userOptional = Optional.ofNullable(userService.findById(id));
+        return userOptional.map(user -> ResponseEntity.ok(userMapper.fromDTO(user)))
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/roles")
+    public List<String> getAllRoles() {
+        return roleService.findAll().stream()
+                .map(Role::getName)
+                .collect(Collectors.toList());
+    }
+
+    @PostMapping("/users")
+    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
+        if (userDTO.getPassword() == null || userDTO.getPassword().
+                trim().isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+        User user = userMapper.fromEntity(userDTO);
+        userService.add(user);
+        return ResponseEntity.ok(userMapper.fromDTO(user));
+    }
+
+    @PostMapping("/users/{id}")
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id,
+                                              @RequestBody UserDTO userDTO) {
+        User user = userService.findById(id);
+
+        user.setUsername(userDTO.getUsername());
+        user.setLastname(userDTO.getLastName());
+        user.setEmail(userDTO.getEmail());
+
+        Set<Role> roles = userDTO.getRoles().stream()
+                .map(roleService::findByName)
+                .collect(Collectors.toSet());
+        user.setRoles(roles);
+
+        userService.update(id, user);
+        return ResponseEntity.ok(userMapper.fromDTO(user));
+    }
+
+    @DeleteMapping("/user/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        userService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+}
