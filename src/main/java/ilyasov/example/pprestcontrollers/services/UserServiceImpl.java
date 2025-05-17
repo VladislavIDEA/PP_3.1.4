@@ -55,6 +55,7 @@ public class UserServiceImpl implements UserService {
         if (userToUpdate != null) {
             userToUpdate.setUsername(user.getUsername());
             userToUpdate.setLastname(user.getLastname());
+            userToUpdate.setAge(user.getAge());
             userToUpdate.setEmail(user.getEmail());
 
             // Обновляем пароль, только если он не пустой (чтобы не затирать существующий)

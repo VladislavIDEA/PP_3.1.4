@@ -70,6 +70,7 @@ public class AdminRestController {
 
         user.setUsername(userDTO.getUsername());
         user.setLastname(userDTO.getLastName());
+        user.setAge(userDTO.getAge());
         user.setEmail(userDTO.getEmail());
 
         Set<Role> roles = userDTO.getRoles().stream()

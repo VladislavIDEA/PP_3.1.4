@@ -29,7 +29,6 @@ public class InitializationUserFromDB {
     public void init() {
         if (roleService.findAll().isEmpty()) {
 
-
             Role adminRole = Role.builder().name("ROLE_ADMIN").build();
             Role userRole = Role.builder().name("ROLE_USER").build();
 
@@ -40,6 +39,7 @@ public class InitializationUserFromDB {
             User admin = User.builder()
                     .username("Admin")
                     .lastname("Admin")
+                    .age((byte) 30)
                     .email("admin@admin.ru")
                     .password("admin")
                     .roles(rolesAdmin)
@@ -48,6 +48,7 @@ public class InitializationUserFromDB {
             User user = User.builder()
                     .username("User")
                     .lastname("User")
+                    .age((byte) 25)
                     .email("user@user.ru")
                     .password("user")
                     .roles(rolesUser)

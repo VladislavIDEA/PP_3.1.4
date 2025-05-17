@@ -1,8 +1,7 @@
 package ilyasov.example.pprestcontrollers.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -34,8 +33,15 @@ public class User implements UserDetails {
     @Column(name = "lastname")
     private String lastname;
 
+
+    @NotNull
+    @Min(1)
+    @Max(120)
+    @Column(name = "age")
+    private Byte age;
+
     @Email
-    @Column(name = "email")
+    @Column(name = "email",unique = true)
     @NotEmpty(message = "Email не может быть пустым")
     private String email;
 
@@ -47,6 +53,7 @@ public class User implements UserDetails {
     @Fetch(FetchMode.JOIN)
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @Builder.Default
     private Set<Role> roles = new HashSet<>();
 
     @Override
