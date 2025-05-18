@@ -63,11 +63,13 @@ public class AdminRestController {
         return ResponseEntity.ok(userMapper.fromDTO(user));
     }
 
-    @PostMapping("/users/{id}")
+    @PutMapping("/users/{id}")
     public ResponseEntity<UserDTO> updateUser(@PathVariable Long id,
                                               @RequestBody UserDTO userDTO) {
         User user = userService.findById(id);
-
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
         user.setUsername(userDTO.getUsername());
         user.setLastname(userDTO.getLastName());
         user.setAge(userDTO.getAge());
@@ -82,7 +84,7 @@ public class AdminRestController {
         return ResponseEntity.ok(userMapper.fromDTO(user));
     }
 
-    @DeleteMapping("/user/{id}")
+    @DeleteMapping("/users/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.delete(id);
         return ResponseEntity.noContent().build();

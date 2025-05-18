@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void update(Long id, User user) {
-        User userToUpdate = userRepository.findById(id).orElse(null);
+        User userToUpdate = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
         if (userToUpdate != null) {
             userToUpdate.setUsername(user.getUsername());
             userToUpdate.setLastname(user.getLastname());
