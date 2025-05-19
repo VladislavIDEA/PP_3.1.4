@@ -2,6 +2,8 @@ package ilyasov.example.pprestcontrollers.services;
 
 import ilyasov.example.pprestcontrollers.models.Role;
 import ilyasov.example.pprestcontrollers.repositoryes.RoleRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -9,27 +11,39 @@ import java.util.List;
 
 @Service
 public class RoleServiceImpl implements RoleService {
-
+    private static final Logger log = LoggerFactory.getLogger(RoleServiceImpl.class);
     private final RoleRepository roleRepository;
 
     public RoleServiceImpl(RoleRepository roleRepository) {
         this.roleRepository = roleRepository;
     }
+
     @Transactional(readOnly = true)
     @Override
     public List<Role> findAll() {
-        return roleRepository.findAll();
+        log.info("Fetching all roles");
+        List<Role> roles = roleRepository.findAll();
+        log.debug("Found {} roles", roles.size());
+        return roles;
     }
 
     @Override
     @Transactional
     public void add(Role role) {
+        log.info("Adding role: {}", role.getName());
         roleRepository.save(role);
+        log.debug("Role added: {}", role.getName());
     }
 
     @Override
     public Role findByName(String name) {
-        return roleRepository.findByName(name)
-                .orElseThrow(() -> new RuntimeException("Role not found: " + name));
+        log.debug("Finding role by name: {}", name);
+        Role role = roleRepository.findByName(name)
+                .orElseThrow(() -> {
+                    log.error("Role not found: {}", name);
+                    return new RuntimeException("Role not found: " + name);
+                });
+        log.debug("Found role: {}", role.getName());
+        return role;
     }
 }

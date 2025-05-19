@@ -6,6 +6,8 @@ import ilyasov.example.pprestcontrollers.models.User;
 import ilyasov.example.pprestcontrollers.models.UserDTO;
 import ilyasov.example.pprestcontrollers.services.RoleService;
 import ilyasov.example.pprestcontrollers.services.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +20,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/admin")
 public class AdminRestController {
+    private static final Logger log = LoggerFactory.getLogger(AdminRestController.class);
     private final UserService userService;
     private final RoleService roleService;
     private final UserMapper userMapper;
@@ -33,9 +36,12 @@ public class AdminRestController {
 
     @GetMapping("/users")
     public List<UserDTO> getAllUsers() {
-        return userService.findAll().stream()
+        log.info("Fetching all users");
+        List<UserDTO> users = userService.findAll().stream()
                 .map(userMapper::fromDTO)
                 .collect(Collectors.toList());
+        log.debug("Found {} users", users.size());
+        return users;
     }
 
     @GetMapping("/users/{id}")
