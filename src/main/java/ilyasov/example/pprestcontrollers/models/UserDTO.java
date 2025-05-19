@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -15,6 +16,6 @@ public class UserDTO {
     private String lastName;
     private Byte age;
     private String email;
-    private Set<String> roles;
+    private Set<String> roles = new HashSet<>();
     private String password;
 }

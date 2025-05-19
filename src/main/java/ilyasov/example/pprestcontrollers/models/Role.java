@@ -1,5 +1,6 @@
 package ilyasov.example.pprestcontrollers.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,7 +26,7 @@ public class Role implements GrantedAuthority {
     private String name;
 
     @ManyToMany(mappedBy = "roles")
-    @Builder.Default
+    @JsonIgnore
     private Set<User> users = new HashSet<>();
 
     @Override

@@ -79,7 +79,7 @@ public class UserServiceImpl implements UserService {
     public void delete(Long id) {
         userRepository.deleteById(id);
     }
-
+    @Transactional(readOnly = true)
     @Override
     public List<User> findAll() {
         return userRepository.findAll();

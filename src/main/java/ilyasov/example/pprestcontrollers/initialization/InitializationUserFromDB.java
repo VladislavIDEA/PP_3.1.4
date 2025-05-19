@@ -6,6 +6,7 @@ import ilyasov.example.pprestcontrollers.services.RoleService;
 import ilyasov.example.pprestcontrollers.services.UserService;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,48 +17,47 @@ import java.util.Set;
 public class InitializationUserFromDB {
     private final UserService userService;
     private final RoleService roleService;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
     public InitializationUserFromDB(UserService userService,
-                                    RoleService roleService) {
+                                    RoleService roleService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.roleService = roleService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @PostConstruct
     @Transactional
     public void init() {
-        if (roleService.findAll().isEmpty()) {
-
-            Role adminRole = Role.builder().name("ROLE_ADMIN").build();
-            Role userRole = Role.builder().name("ROLE_USER").build();
-
-            Set<Role> rolesAdmin = new HashSet<>();
-            Set<Role> rolesUser = new HashSet<>();
-            rolesAdmin.add(adminRole);
-            rolesUser.add(userRole);
-            User admin = User.builder()
-                    .username("Admin")
-                    .lastname("Admin")
-                    .age((byte) 30)
-                    .email("admin@admin.ru")
-                    .password("admin")
-                    .roles(rolesAdmin)
-                    .build();
-
-            User user = User.builder()
-                    .username("User")
-                    .lastname("User")
-                    .age((byte) 25)
-                    .email("user@user.ru")
-                    .password("user")
-                    .roles(rolesUser)
-                    .build();
+        if (userService.findAll().isEmpty()) {
+            Role adminRole = new Role();
+            adminRole.setName("ROLE_ADMIN");
             roleService.add(adminRole);
-            roleService.add(userRole);
-            userService.add(admin);
-            userService.add(user);
 
+            Role userRole = new Role();
+            userRole.setName("ROLE_USER");
+            roleService.add(userRole);
+
+            Set<Role> adminRoles = new HashSet<>();
+            adminRoles.add(adminRole);
+
+            User admin = new User();
+            admin.setUsername("Admin");
+            admin.setPassword(passwordEncoder.encode("admin"));
+            admin.setEmail("admin@admin.ru");
+            admin.setRoles(adminRoles);
+            userService.add(admin);
+
+            Set<Role> userRoles = new HashSet<>();
+            userRoles.add(userRole);
+
+            User user = new User();
+            user.setUsername("User");
+            user.setPassword(passwordEncoder.encode("user"));
+            user.setEmail("user@user.ru");
+            user.setRoles(userRoles);
+            userService.add(user);
         }
     }
 }

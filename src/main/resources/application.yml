@@ -40,7 +40,10 @@ logging:
       springframework:
         web: DEBUG
         security: DEBUG
+        orm:
+          jpa: DEBUG
       hibernate:
         SQL: DEBUG
-        type: trace # Для логгирования параметров запросов
+        type: TRACE # Для логгирования параметров запросов
+
     root: INFO

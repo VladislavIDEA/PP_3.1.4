@@ -18,7 +18,7 @@ async function loadUsers() {
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>${user.id}</td>
-            <td>${user.firstName}</td>
+            <td>${user.username}</td>
             <td>${user.lastName}</td>
             <td>${user.email}</td>
             <td>${user.roles.join(', ')}</td>
@@ -102,8 +102,8 @@ function generateUserFormHTML({user = {}, roles = []}) {
                 ${isEdit ? `<input type="hidden" name="id" value="${user.id}">` : ''}
                 
                 <div class="form-group">
-                    <label>First Name</label>
-                    <input type="text" class="form-control" name="firstName" value="${user.firstName || ''}" required>
+                    <label>Username</label>
+                    <input type="text" class="form-control" name="username" value="${user.username || ''}" required>
                 </div>
                 <div class="form-group">
                     <label>Last Name</label>
@@ -138,7 +138,7 @@ function setupFormSubmit(onSuccess, userId = null) {
 
         const formData = new FormData(form);
         const data = {
-            firstName: formData.get('firstName'),
+            username: formData.get('username'),
             lastName: formData.get('lastName'),
             email: formData.get('email'),
             password: formData.get('password') || undefined,
